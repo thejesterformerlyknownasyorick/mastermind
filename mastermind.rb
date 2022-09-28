@@ -1,6 +1,7 @@
 code_array = []
+guess_array = []
 
-def code_randomizer_easy
+def code_randomizer
     a = (1..6).to_a.shuffle
     i = 0
     random_array = []
@@ -11,30 +12,46 @@ def code_randomizer_easy
     random_array
 end 
 
-
-def code_randomizer_hard
+def game(code_array)
     i = 0
-    random_array = []
-    while i < 4
-        random_array.push(rand(1..6))
-        i += 1
+    while i < 12
+        puts "Make a guess! Code is four digits."
+        guess = gets.chomp
+        while guess.length() != 4
+            puts "Four digits, please, and no spaces."
+            guess = gets.chomp
+        end
+
+        outcome = []
+        guess_array = guess.split("").map(&:to_i)
+        outcome.push(guess_checker(code_array, guess_array))
+        outcome = outcome.join("")
+        puts outcome
+        if outcome == "****"
+            puts "You win!"
+            i = 12
+        end
     end
-    random_array
+    if i == 12 && outcome != "****"
+        puts "You lose :("
+    end
 end
 
-difficulty_choice = "Easy: Code will be a random sequence of four non-repeating numbers between 1 and 6.\n
-Hard: Code will be a random sequence of numbers between 1 and 6, with possible repeated number.\n
-Pick a difficulty: Easy, Hard"
+def guess_checker(code, guess)
+    outcome = []
+    code.each_with_index do |code_num, code_i|
+        guess.each_with_index do |guess_num, guess_i|
+            if guess_num == code_num && code_i == guess_i
+                outcome.push("*")
+                outcome.slice(code_i)
+            elsif guess_num == code_num
+                outcome.push("^")
+            end
+        end
+    end
+    outcome.sort
+end
 
-puts difficulty_choice
-difficulty = gets.chomp
-unless difficulty.downcase == "easy" || difficulty.downcase == "hard"
-    puts "You only had two choices. How did you screw that up? Try again."
-    difficulty = gets.chomp
-end
-if difficulty.downcase == "easy"
-    code_array = code_randomizer_easy
-elsif difficulty.downcase == "hard"
-    code_array = code_randomizer_hard
-end
-p code_array
+code_array = code_randomizer
+
+game(code_array)
