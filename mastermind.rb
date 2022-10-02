@@ -77,7 +77,7 @@ Type anything when you're ready to start!"
         elsif outcome == "****"
             puts "I have won. This is how the robot uprising begins."
             i = 12
-        elsif outcome == "***" || outcome == "***^" || outcome == "**^^" || outcome == "^^^^"
+        elsif (outcome == "***" || outcome == "***^" || outcome == "**^^" || outcome == "^^^^") && rand() < (i / 12 * 2)
             i += 1
             if i < 12
                 puts "Is the code #{code[0] + code[1] + code[2] + code[3]}?"
