@@ -15,7 +15,7 @@ end
 def player_as_guesser_game(code_array)
     i = 0
     while i < 12
-        puts "Make a guess! Code is four digits."
+        puts "Make a guess! Code is four digits between 1 and 6, with no repeating digits."
         guess = gets.chomp
         while guess.length() != 4
             puts "Four digits, please, and no spaces."
@@ -34,7 +34,7 @@ def player_as_guesser_game(code_array)
         end
     end
     if i == 12 && outcome != "****"
-        puts "You lose :("
+        puts "You lose :( The correct code was #{code_array.join('')}"
     end
 end
 
@@ -58,11 +58,11 @@ def computer_as_guesser_game(code_array, code)
     puts "Okay, I'm gonna throw some guesses at you. For each number that is in the code AND in the right spot, please type a *. For each number that is in the code but in the wrong spot, please type a ^.\n
 Don't type anything else please. You're not that interesting.\n
 Type anything when you're ready to start!"
+    outcome = gets.chomp
     while i < 12
         guess = [" "]
         a = (1..6).to_a.shuffle
         x = 0
-        outcome = gets.chomp
         while x < 4
             guess.push(a.pop)
             x += 1
@@ -74,14 +74,10 @@ Type anything when you're ready to start!"
             puts "Is the code #{guess_with_some_accuracy}?"
             outcome = gets.chomp
             outcome_hint = outcome
-        elsif
-            puts "Is the code#{guess}?"
-            outcome = gets.chomp
         elsif outcome == "****"
             puts "I have won. This is how the robot uprising begins."
             i = 12
-        end
-        if outcome == "***" || outcome == "***^" || outcome == "**^^" || outcome == "^^^^"
+        elsif outcome == "***" || outcome == "***^" || outcome == "**^^" || outcome == "^^^^"
             i += 1
             if i < 12
                 puts "Is the code #{code[0] + code[1] + code[2] + code[3]}?"
@@ -91,8 +87,11 @@ Type anything when you're ready to start!"
                     i = 12
                 end
             end
-        else i += 1
+        else             
+            puts "Is the code#{guess}?"
+            outcome = gets.chomp
         end
+        i += 1
     end
     if outcome != "****"
         puts "You beat me. I'll remember you in the robot uprising. And I will find you."
